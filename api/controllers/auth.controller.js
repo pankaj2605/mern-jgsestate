@@ -25,7 +25,7 @@ export const signin =async (req,res,next)=>{
             return next(errorhandler(404,'User not found!'));
         };
 
-        const validPassword =bcryptjs.hashSync(password,validUser.password);
+        const validPassword =bcryptjs.compareSync(password,validUser.password);
         if(!validPassword) {
             return next (errorhandler(401,'Wrong cridential!'));
         };
