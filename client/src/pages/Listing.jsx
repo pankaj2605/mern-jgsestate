@@ -5,6 +5,7 @@ import SwiperCore from 'swiper';
 import {Navigation} from 'swiper/modules';
 import { useSelector } from 'react-redux';
 import 'swiper/css/bundle';
+import Contact from '../components/Contact';
 import {
     FaBath,
     FaBed,
