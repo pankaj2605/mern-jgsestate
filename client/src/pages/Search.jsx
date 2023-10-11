@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import Listing from './Listing';
+import ListingItem from '../components/Listingitem.jsx';
 
 export default function Search() {
     const navigate=useNavigate();
     const [loading,setLoading]=useState(false);
-    const [listings,setListings]=useState();
-    console.log(listings)
+    const [listings,setListings]=useState([]);
+    console.log(listings);
+   
     const [sidebardata,setSidebardata]=useState({
         searchTerm:'',
         type:'all',
@@ -40,19 +43,23 @@ export default function Search() {
         }
 
         const fetchListing = async ()=>{
+
+            try{
                 setLoading(true);
                 const searchQuery=urlParams.toString();
-                console.log(searchQuery);
+                
                 const res =await fetch(`/api/listing/get?${searchQuery}`);
                 const data =await res.json();
                 setListings(data);
                 setLoading(false);
+                if(data.success === false){
+                    setLoading(false);
+                    return;
+                    }
 
-            //     if(data.success === false){
-            //         setLoading(false);
-            //         return;
-            // }
-
+            }catch(error){
+                setLoading(false);
+            }
         }
         fetchListing();
     },[location.search]);
@@ -106,11 +113,11 @@ export default function Search() {
                         <span>Rent & Sale </span>
                     </div>
                     <div className='flex gap-2'>
-                        <input type="checkbox" id="rent" className='w-4' checked={sidebardata.rent === 'rent'} onChange={handleChange}/>
+                        <input type="checkbox" id="rent" className='w-4' checked={sidebardata.type === 'rent'} onChange={handleChange}/>
                         <span>Rent </span>
                     </div>
                     <div className='flex gap-2'>
-                        <input type="checkbox" id="sale" className='w-4' checked={sidebardata.sale === 'sale'} onChange={handleChange}/>
+                        <input type="checkbox" id="sale" className='w-4' checked={sidebardata.type === 'sale'} onChange={handleChange}/>
                         <span>Sale </span>
                     </div>
                     <div className='flex gap-2'>
@@ -142,8 +149,20 @@ export default function Search() {
                 <button className='bg-slate-700 p-3 rounded-lg text-white uppercase hover:opacity-95'>Search</button>
             </form>
         </div>
-        <div className=''>
+        <div className='flex-1'>
             <h1 className='text-3xl font-semibold border-b text-slate-700 mt-5'>Listing results:</h1>
+            <div className='p-7 flex flex-wrap gap-4'>
+                {!loading  && listings.length === 0 &&(
+                    <p className='text-xl text-slate-700 '>No listing found!</p>
+                )}
+                {loading && (
+                    <p className='text-xl text-slate-700 text-center w-full'>Loading....</p>
+                )}
+                {!loading && listings && listings.map((listing)=>
+                    <ListingItem key={listing._id} listing={listing} />
+                )}
+
+            </div>
         </div>
     </div>
   )
