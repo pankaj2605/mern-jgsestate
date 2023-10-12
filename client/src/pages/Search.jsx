@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Listing from './Listing';
-import ListingItem from '../components/Listingitem.jsx';
+import ListingItem from '../components/ListingItem.jsx';
 
 export default function Search() {
     const navigate=useNavigate();
