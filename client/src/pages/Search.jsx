@@ -9,8 +9,8 @@ export default function Search() {
     const [loading,setLoading]=useState(false);
     const [listings,setListings]=useState([]);
     const [showMore,setShowMore]=useState(false);
-    console.log(showMore);
-    console.log(listings);
+    // console.log(showMore);
+    // console.log(listings);
    
     const [sidebardata,setSidebardata]=useState({
         searchTerm:'',
